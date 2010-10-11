@@ -57,6 +57,8 @@ class dinThemePartialView extends dinThemeView
     public function configure()
     {
 
+        $this->configureHaml();
+
         $this->setDecorator( false );
         $this->setTemplate( $this->actionName . $this->getExtension() );
 
@@ -68,15 +70,18 @@ class dinThemePartialView extends dinThemeView
             . sfConfig::get( 'theme_' . $theme . '_module_path', '/modules') . '/'
             . $this->moduleName . '/';
 
-        if ( 'global' == $this->moduleName )
+        if ( !$this->directory )
         {
-            $this->setDirectory(
-                $this->context->getConfiguration()->getDecoratorDir( $this->getTemplate() )
-            );
-        }
-        else
-        {
-            $this->setDirectory( $this->modulePath );
+            if ( 'global' == $this->moduleName )
+            {
+                $this->setDirectory(
+                    $this->context->getConfiguration()->getDecoratorDir( $this->getTemplate() )
+                );
+            }
+            else
+            {
+                $this->setDirectory( $this->modulePath );
+            }
         }
 
     } // dinThemePartialView::configure()

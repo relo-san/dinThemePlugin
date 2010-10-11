@@ -15,7 +15,7 @@
  * @subpackage  lib.view
  * @author      Nicolay N. Zyk <relo.san@gmail.com>
  */
-class dinThemeView extends sfPHPView
+class dinThemeView extends dinHamlView
 {
 
     /**
@@ -53,6 +53,8 @@ class dinThemeView extends sfPHPView
     public function configure()
     {
 
+        $this->configureHaml();
+
         // store our current view
         $this->context->set( 'view_instance', $this );
 
@@ -75,7 +77,7 @@ class dinThemeView extends sfPHPView
                            . sfConfig::get( 'theme_' . $theme . '_layout_path', '/layouts' ) . '/';
         $this->modulePath = $app_dir . $this->themePath
                            . sfConfig::get( 'theme_' . $theme . '_module_path', '/modules') . '/'
-                           . $this->moduleName . '/';
+                           . $this->moduleName;
 
         // set template directory
         if ( !$this->directory )
@@ -156,14 +158,14 @@ class dinThemeView extends sfPHPView
             $params['vars'] = isset( $params['vars'] ) ? $params['vars'] : array();
             $this->setLayoutSlot(
                 $params['parent'], $params['slot'],
-                $this->renderLayout( $this->layoutPath . $layout . '.php', $params['vars'] ),
+                $this->renderLayout( $this->layoutPath . $layout . $this->extension, $params['vars'] ),
                 $params['order']
             );
         }
 
         // build base layout
         $base['vars'] = isset( $base['vars'] ) ? $base['vars'] : array();
-        return $this->renderLayout( $this->layoutPath . 'layout.php', $base['vars'] );
+        return $this->renderLayout( $this->layoutPath . 'layout' . $this->extension, $base['vars'] );
 
     } // dinThemeView::buildLayout()
 
